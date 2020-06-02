@@ -19,5 +19,6 @@ from recommender import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('recommendations/', views.get_count_recommended, name='recommendations')
+    path('recommendations/', views.get_count_recommended, name='recommendations'),
+    path('authors/', views.get_author_list, name='authors')
 ]

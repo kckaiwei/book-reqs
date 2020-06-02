@@ -29,3 +29,12 @@ def get_count_recommended(request):
             pass
 
     return JsonResponse({'data': []})
+
+
+@login_required
+def get_author_list(request):
+    authors = Author.objects.all()
+    author_list = []
+    for author in authors:
+        author_list.append(author.name)
+    return JsonResponse({'data': author_list})
