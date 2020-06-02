@@ -14,7 +14,8 @@ def get_count_recommended(request):
     if rec_count:
         books = Book.objects.annotate(rec_count=Count('recommendation')).filter(rec_count=rec_count)
         for book in books.all():
-            rec_list.append({'title': book.title, 'author': book.author.name})
+            rec_list.append({'title': book.title, 'author': book.author.name,
+                             'url': book.amazon_link if book.amazon_link else "#"})
         return JsonResponse({'data': rec_list})
 
     if author:
