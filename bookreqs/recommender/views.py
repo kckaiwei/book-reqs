@@ -23,7 +23,8 @@ def get_count_recommended(request):
             if not author_obj:
                 return JsonResponse({})
             for book in author_obj.book_set.all():
-                rec_list.append({'title': book.title, 'author': book.author.name})
+                rec_list.append({'title': book.title, 'author': book.author.name,
+                                 'url': book.amazon_link if book.amazon_link else "#"})
             return JsonResponse({'data': rec_list})
         except Author.DoesNotExist:
             pass
