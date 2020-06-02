@@ -15,3 +15,14 @@ while in `book-reqs/bookreqs`
 run `python manage.py collectstatic`
 
 run `python manage.py runserver`
+
+Building React bundle:
+---
+
+while in `book-reqs/brfront`
+
+run `npm run build-debug`
+
+or 
+
+run `npm run build-jsx`

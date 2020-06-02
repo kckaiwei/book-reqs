@@ -1,0 +1,8 @@
+@font-face {
+    font-family: quasimoda;
+    src: url("../fonts/quasimoda-light.otf")
+}
+
+body {
+    background-color: #347991;
+}
