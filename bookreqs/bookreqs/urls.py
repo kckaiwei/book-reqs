@@ -14,11 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from recommender import views
 
 urlpatterns = [
+    path('accounts/login/', admin.site.urls),
     path('admin/', admin.site.urls),
-    path('recommendations/', views.get_count_recommended, name='recommendations'),
-    path('authors/', views.get_author_list, name='authors')
-]
+    path('recommendations/', views.get_count_recommended, name='recommendations_api'),
+    path('authors/', views.get_author_list, name='authors_api'),
+    path('', views.recommendations_page, name="recommendations"),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

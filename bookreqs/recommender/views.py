@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from recommender.models import Author, Book
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from django.db.models import Count
 
 
@@ -38,3 +38,8 @@ def get_author_list(request):
     for author in authors:
         author_list.append(author.name)
     return JsonResponse({'data': author_list})
+
+
+@login_required
+def recommendations_page(request):
+    return render(request, 'recommender/index.html')
