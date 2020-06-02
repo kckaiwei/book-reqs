@@ -9,7 +9,7 @@ function App() {
   useEffect(async () => {
     // Can't return an async function, but can call one in an effect
     const fetchData = async () => {
-      const result = await axios("/recommendations/?count=1");
+      const result = await axios("127.0.0.1:8000/recommendations/?count=1");
       setData(result.data);
     };
     fetchData();
