@@ -54,6 +54,7 @@ function App() {
     // Can't return an async function, but can call one in an effect
     const fetchData = async () => {
       if (isNaN(query) == true) {
+        // Normally wouldn't hard code this; and use env vars
         const result = await axios(
           `http://127.0.0.1:8000/recommendations/?author=${query}`
         );
@@ -135,16 +136,18 @@ function App() {
                 onClick={function () {
                   setList(
                     userList.concat(
-                      books.data.filter(function (book) {
+                        // Reduce to filter + map at the same time
+                      books.data.reduce(function (result, book) {
                         if (book.selected == true) {
-                          return {
+                          result.push({
                             title: book.title,
                             author: book.author,
                             url: book.url,
                             selected: false,
-                          };
+                          });
                         }
-                      })
+                        return result;
+                      }, [])
                     )
                   );
                   setData({
@@ -167,16 +170,19 @@ function App() {
               <button className={"btn btn-outline-secondary"} onClick={function () {
                   setData({data:
                     books.data.concat(
-                      userList.filter(function (book) {
+                      userList.reduce(function (result, book) {
+                        console.log(book)
+                        console.log(book.selected)
                         if (book.selected == true) {
-                          return {
+                          result.push({
                             title: book.title,
                             author: book.author,
                             url: book.url,
                             selected: false,
-                          };
+                          });
                         }
-                      })
+                        return result
+                      }, [])
                     )
               }
                   );
@@ -255,7 +261,6 @@ function addSelectedKey(result, userList, stateFunction) {
   });
   // Account for already saved items to not show again
   let filteredData = response.data.filter(function (book) {
-    console.log({ ...book, selected: true });
     if (compareList.includes(`${book.title}:${book.author}`)
     ) {
       return null
