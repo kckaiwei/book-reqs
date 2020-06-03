@@ -1,8 +1,9 @@
+import json
+
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from recommender.models import Book, Author, Recommendation, UserList
 
-import json
+from recommender.models import Book, Author, Recommendation, UserList
 
 
 # Create your tests here.
