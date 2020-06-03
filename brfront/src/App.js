@@ -61,7 +61,6 @@ function App() {
     if (firstRendered == false) {
       // Must chain so we can keep order for initial state
       fetchUserList(setList).then(function (resp_list) {
-        console.log("thened");
         fetchData(query, resp_list, setData);
       });
       firstRendered = true;
@@ -92,6 +91,7 @@ function App() {
         </CenterHeader>
         <div className="row">
           <LeftPane className={"col-sm left-pane"}>
+              <h2>Recommendations</h2>
             <Fragment>
               <ul className={"list-group"}>
                 {books.data.map((item) => (
@@ -230,6 +230,7 @@ function App() {
             </ButtonContainer>
           </CenterPane>
           <RightPane className={"col-sm right-pane"}>
+              <h2> Your Saved Books </h2>
             <Fragment>
               <ul className={"list-group"}>
                 {userList.map((item) => (
