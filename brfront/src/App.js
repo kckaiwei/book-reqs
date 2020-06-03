@@ -1,49 +1,48 @@
 import "@babel/polyfill";
 import React, { Fragment, useState, useEffect } from "react";
-import {fetchData} from "./utils";
+import { fetchData } from "./utils";
 import styled from "styled-components";
-import axios from "axios";
 
 const Title = styled.h1`
-    font-size: 3em;
-    text-align: center;
-    color: white;
-    font-family: quasimoda;
-  `;
+  font-size: 3em;
+  text-align: center;
+  color: white;
+  font-family: quasimoda;
+`;
 
-  const InputHelper = styled.label`
-    font-size: 0.65em;
-    text-align: left;
-    color: white;
-    font-family: quasimoda;
-  `;
+const InputHelper = styled.label`
+  font-size: 0.65em;
+  text-align: left;
+  color: white;
+  font-family: quasimoda;
+`;
 
-  const CenterHeader = styled.div`
-    text-align: center;
-  `;
+const CenterHeader = styled.div`
+  text-align: center;
+`;
 
-  const ButtonContainer = styled.div`
-    margin-top: 4rem;
-    background-color: white;
-    border-radius: 0.4rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  `;
+const ButtonContainer = styled.div`
+  margin-top: 4rem;
+  background-color: white;
+  border-radius: 0.4rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+`;
 
-  const LeftPane = styled.div`
-    font-size: 1rem;
-    text-align: left;
-    margin-left: 1rem;
-  `;
-  const CenterPane = styled.div`
-    font-size: 1rem;
-    text-align: center;
-  `;
-  const RightPane = styled.div`
-    font-size: 1rem;
-    text-align: right;
-    margin-right: 1rem;
-  `;
+const LeftPane = styled.div`
+  font-size: 1rem;
+  text-align: left;
+  margin-left: 1rem;
+`;
+const CenterPane = styled.div`
+  font-size: 1rem;
+  text-align: center;
+`;
+const RightPane = styled.div`
+  font-size: 1rem;
+  text-align: right;
+  margin-right: 1rem;
+`;
 
 function App() {
   const [books, setData] = useState({ data: [] });

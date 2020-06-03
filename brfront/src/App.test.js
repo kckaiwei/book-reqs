@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import axios from "axios";
 
@@ -8,8 +8,11 @@ import Adapter from "enzyme-adapter-react-16";
 configure({ adapter: new Adapter() });
 
 import App from "./App.js";
+import {fetchData} from "./utils";
 
+// Need to mock modules
 jest.mock("axios");
+jest.mock("./utils.js");
 
 describe("<App/>", () => {
   it("renders 4 dividers, 3 columns, 1 header", () => {
@@ -24,16 +27,10 @@ describe("<App/>", () => {
 });
 
 describe("test app hooks", () => {
-  let props;
-  let wrapper;
-  let useEffect;
 
-  const data = "George Orwell";
-
-  const mockUseEffect = () => {
-    useEffect.mockImplementationOnce(f => f());
-  };
-
+  beforeEach(() =>{
+    fetchData.mockImplementation(() => {})
+  })
 
   const resp = {
     data: [
@@ -46,22 +43,19 @@ describe("test app hooks", () => {
     ],
   };
 
-  beforeEach(() => {
-    useEffect = jest.spyOn(React, "useEffect");
-
-    props = {
-      setData: jest.fn().mockResolvedValue(resp)
-    }
-
-    mockUseEffect();
-    mockUseEffect();
-    wrapper = shallow(<App {...props}/>);
+  it("calls the fetch function", () => {
+    const wrapper = mount(<App />);
+    expect(fetchData).toHaveBeenCalled();
   });
 
-  describe("on start", () => {
-    it ("loads the books", () => {
-      expect(props.setData).toHaveBeenCalled();
+  it("creates a book list", () => {
+    axios.get.mockResolvedValue(resp);
+    fetchData.mockImplementation(function(query, userList, setData){
+      setData(resp)
     })
-  })
 
+    const wrapper = mount(<App />);
+    expect(wrapper.find("li")).toHaveLength(1);
+    expect(wrapper.find("li").first().find("span").first().text()).toEqual('1984')
+  });
 });
