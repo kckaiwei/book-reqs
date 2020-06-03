@@ -1,9 +1,11 @@
+import json
+
 from django.contrib.auth.decorators import login_required
-from recommender.models import Author, Book, UserList
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.db.models import Count
-import json
+
+from recommender.models import Author, Book, UserList
 
 
 @login_required
