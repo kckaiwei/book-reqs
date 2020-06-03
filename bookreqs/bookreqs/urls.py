@@ -16,13 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 from django.urls import path
 from recommender import views
 
 urlpatterns = [
-    path('accounts/login/', admin.site.urls),
     path('admin/', admin.site.urls),
     path('recommendations/', views.get_count_recommended, name='recommendations_api'),
     path('authors/', views.get_author_list, name='authors_api'),
     path('', views.recommendations_page, name="recommendations"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+urlpatterns += [
+    path("accounts/login/", auth_views.LoginView.as_view())
+]

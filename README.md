@@ -16,6 +16,13 @@ run `python manage.py collectstatic`
 
 run `python manage.py runserver`
 
+Running the tests:
+---
+
+while in `book-reqs/bookreqs`
+
+run `python manage.py test`
+
 Building React bundle:
 ---
 

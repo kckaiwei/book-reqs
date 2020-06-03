@@ -10,7 +10,7 @@ class RecommendationTestCase(TestCase):
         seuss = Author.objects.create(name="Dr. Seuss")
         cat = Book.objects.create(title="The Cat in the Hat")
         seuss.book_set.add(cat)
-        places = Book.objects.create(title="Oh the Places We'll Go")
+        places = Book.objects.create(title="Oh the Places We'll Go", amazon_link="https://amazon.com")
         seuss.book_set.add(places)
         seuss.save()
 
@@ -29,8 +29,9 @@ class RecommendationTestCase(TestCase):
 
     def test_api_gets_author_books(self):
         response = self.client.get('/recommendations/', {'author': 'Dr. Seuss'})
-        self.assertEqual(response.json()["data"], [{"title": "The Cat in the Hat", "author": "Dr. Seuss"},
-                                                   {"title": "Oh the Places We\'ll Go", "author": "Dr. Seuss"}])
+        self.assertEqual(response.json()["data"], [{"title": "The Cat in the Hat", "author": "Dr. Seuss", "url": "#"},
+                                                   {"title": "Oh the Places We\'ll Go", "author": "Dr. Seuss",
+                                                    "url": "https://amazon.com"}])
 
     def test_api_get_blank(self):
         response = self.client.get('/recommendations/', {'author': 'Calvin and Hobbes'})
@@ -38,10 +39,11 @@ class RecommendationTestCase(TestCase):
 
     def test_api_gets_recommendation_count(self):
         response = self.client.get('/recommendations/', {'count': '2'})
-        self.assertEqual(response.json()['data'], [{"title": "The Cat in the Hat", "author": "Dr. Seuss"}])
+        self.assertEqual(response.json()['data'], [{"title": "The Cat in the Hat", "author": "Dr. Seuss", "url": "#"}])
 
         response = self.client.get('/recommendations/', {'count': '1'})
-        self.assertEqual(response.json()['data'], [{"title": "Oh the Places We\'ll Go", "author": "Dr. Seuss"}])
+        self.assertEqual(response.json()['data'], [{"title": "Oh the Places We\'ll Go", "author": "Dr. Seuss",
+                                                    "url": "https://amazon.com"}])
 
         response = self.client.get('/recommendations/', {'count': '5'})
         self.assertEqual(response.json()['data'], [])
