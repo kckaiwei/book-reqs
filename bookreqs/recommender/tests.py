@@ -66,18 +66,13 @@ class RecommendationTestCase(TestCase):
                                                     'title': 'The Unincorporated Man', 'url': ''}])
 
     def test_save_user_list(self):
-        response = self.client.put('/save/', json.dumps({'data': [{'title': '1984',
-                                                                   'author': 'George Orwell',
-                                                                   'url': 'http://www.amazon.com/1984-'
-                                                                          'Signet-Classics-George-Orwell/'
-                                                                          'dp/0451524934',
+        response = self.client.put('/save/', json.dumps({'data': [{'title': 'The Unincorporated Man',
+                                                                   'author': 'Dani Kollin',
+                                                                   'url': '',
                                                                    'selected': False}]}))
         self.assertEqual(response.status_code, 200)
-        added_book = None
-        try:
-            added_book = Book.objects.get(title="1984")
-        except Book.DoesNotExist:
-            pass
+        # No need for except, since that would throw an error for the test anyways
+        added_book = Book.objects.get(title="The Unincorporated Man")
         self.assertTrue(added_book)
 
     def check_status_code(self, response):
