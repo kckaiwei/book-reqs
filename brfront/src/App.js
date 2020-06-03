@@ -53,25 +53,16 @@ function App() {
   useEffect(() => {
     // Can't return an async function, but can call one in an effect
     const fetchData = async () => {
-      console.log(isNaN(query));
       if (isNaN(query) == true) {
         const result = await axios(
           `http://127.0.0.1:8000/recommendations/?author=${query}`
         );
-        console.log(result.data);
-        // Add a new condition of selected or not
-        let response = result.data;
-        Object.keys(response).map((key) => (result.data[key].selected = false));
-        setData(response);
-        console.log(response);
+        addSelectedKey(result, userList, setData);
       } else {
         const result = await axios(
           `http://127.0.0.1:8000/recommendations/?count=${query}`
         );
-        let response = result.data;
-        Object.keys(response).map((key) => (result.data[key].selected = false));
-        setData(response);
-        console.log(response);
+        addSelectedKey(result, userList, setData);
       }
     };
 
@@ -142,22 +133,29 @@ function App() {
               <button
                 className={"btn btn-outline-primary"}
                 onClick={function () {
-                  setList(userList.concat(
-                    books.data.map(function (book) {
-                      if (book.selected == true) {
-                        return {
-                          title: book.title,
-                          author: book.author,
-                          url: book.url,
-                          selected: false,
-                        };
-                      }
-                    }))
+                  setList(
+                    userList.concat(
+                      books.data.filter(function (book) {
+                        if (book.selected == true) {
+                          return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: false,
+                          };
+                        }
+                      })
+                    )
                   );
                   setData({
                     data: books.data.filter(function (book) {
                       if (book.selected != true) {
-                        return;
+                        return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: false,
+                          };
                       }
                     }),
                   });
@@ -166,7 +164,35 @@ function App() {
                 Add to list {"->"}
               </button>
               <br />
-              <button className={"btn btn-outline-secondary"}>
+              <button className={"btn btn-outline-secondary"} onClick={function () {
+                  setData({data:
+                    books.data.concat(
+                      userList.filter(function (book) {
+                        if (book.selected == true) {
+                          return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: false,
+                          };
+                        }
+                      })
+                    )
+              }
+                  );
+                  setList(
+                    userList.filter(function (book) {
+                      if (book.selected != true) {
+                        return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: false,
+                          };
+                      }
+                    }),
+                  );
+                }}>
                 Remove from list {"<-"}
               </button>
             </ButtonContainer>
@@ -182,18 +208,19 @@ function App() {
                       (item.selected == true ? "active" : "")
                     }
                     onClick={function () {
-                      setList(userList.map(function (book) {
-                              if (book.title == item.title) {
-                                book.selected =
-                                  item.selected == true ? false : true;
-                              }
-                              return {
-                                title: book.title,
-                                author: book.author,
-                                url: book.url,
-                                selected: book.selected,
-                              };
-                            })
+                      setList(
+                        userList.map(function (book) {
+                          if (book.title == item.title) {
+                            book.selected =
+                              item.selected == true ? false : true;
+                          }
+                          return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: book.selected,
+                          };
+                        })
                       );
                     }}
                   >
@@ -213,6 +240,28 @@ function App() {
       </header>
     </div>
   );
+}
+
+function addSelectedKey(result, userList, stateFunction) {
+  let response = result.data;
+  // Add a new condition of selected or not
+  response.data = response.data.map(function(book) {
+    return {"title": book.title, "author": book.author, "url": book.url, "selected": false}
+  });
+  console.log(response)
+  // Account for already saved items to not show again
+  let filteredData = response.data.filter(function (book) {
+    console.log({ ...book, selected: true });
+    if (
+      userList.includes({ ...book, selected: true }) ||
+      userList.includes({ ...book, selected: false })
+    ) {
+      console.log("within")
+      return null
+    }
+    return book
+  });
+  stateFunction({data: filteredData});
 }
 
 export default App;
