@@ -47,3 +47,22 @@ class RecommendationTestCase(TestCase):
 
         response = self.client.get('/recommendations/', {'count': '5'})
         self.assertEqual(response.json()['data'], [])
+
+    def test_api_get_authors(self):
+        response = self.client.get('/authors/')
+        self.assertEqual(response.json()['data'], ['Dr. Seuss', 'Dani Kollin'])
+
+    def check_status_code(self, response):
+        self.assertNotEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+
+    # Test if it redirects to login
+    def test_login_required(self):
+        nologin = Client()
+        response = nologin.get('/recommendations/', {'author': 'Calvin and Hobbes'})
+        self.check_status_code(response)
+        response = nologin.get('/authors/')
+        self.check_status_code(response)
+        response = self.client.get('/recommendations/', {'count': '2'})
+        self.check_status_code(response)
+
