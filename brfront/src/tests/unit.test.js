@@ -37,14 +37,13 @@ describe("test app hooks", () => {
 
   it("calls the fetch chain function", () => {
     fetchUserList.mockImplementation(function () {
-      return Promise.resolve([])
+      return Promise.resolve([]);
     });
 
     fetchData.mockImplementation(function (query, userList, setData) {
       act(() => {
         setData(resp);
-      })
-
+      });
     });
     const wrapper = mount(<App />);
     expect(fetchUserList).toHaveBeenCalled();

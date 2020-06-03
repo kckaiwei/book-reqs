@@ -4,12 +4,21 @@
 }
 
 body {
-    background-color: #347991;
+    /*background-color: #347991;*/
+    background-color: white;
+}
+
+.list-group-item {
+    background-color: #eb9278;
 }
 
 .list-group-item.active {
+    /*
     background-color: #6ea062;
     border-color: #6ea062;
+    */
+    background-color: #b25747;
+    border-color: #b25747;
     box-shadow: 5px 5px 0 rgba(0,0,0,.1)
 }
 
@@ -23,4 +32,5 @@ body {
 
 h2 {
     font-family: quasimoda;
+    text-shadow: 1px 1px #b4b4b4;
 }
