@@ -74,7 +74,7 @@ function App() {
           </div>
         </CenterHeader>
         <div className="row">
-          <LeftPane className={"col-sm"}>
+          <LeftPane className={"col-sm left-pane"}>
             <Fragment>
               <ul className={"list-group"}>
                 {books.data.map((item) => (
@@ -113,7 +113,7 @@ function App() {
               </ul>
             </Fragment>
           </LeftPane>
-          <CenterPane className={"col-sm"}>
+          <CenterPane className={"col-sm center-pane"}>
             <ButtonContainer>
               <button
                 className={"btn btn-outline-primary"}
@@ -187,7 +187,7 @@ function App() {
               </button>
             </ButtonContainer>
           </CenterPane>
-          <RightPane className={"col-sm"}>
+          <RightPane className={"col-sm right-pane"}>
             <Fragment>
               <ul className={"list-group"}>
                 {userList.map((item) => (
