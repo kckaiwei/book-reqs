@@ -15,6 +15,14 @@ export async function fetchData(query, userList, setData) {
   }
 }
 
+export async function fetchUserList(setList) {
+    const result = await axios(
+      `http://127.0.0.1:8000/user_list/`
+    );
+    console.log(result);
+    setList(result.data.data)
+}
+
 export function addSelectedKey(result, userList, stateFunction) {
   let response = result.data;
   // Add a new condition of selected or not
@@ -39,4 +47,20 @@ export function addSelectedKey(result, userList, stateFunction) {
     return book;
   });
   stateFunction({ data: filteredData });
+}
+
+export function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }

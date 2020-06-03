@@ -1,7 +1,11 @@
 import "@babel/polyfill";
 import React, { Fragment, useState, useEffect } from "react";
-import { fetchData } from "./utils";
+import axios from "axios/index";
+import { fetchData, fetchUserList, getCookie } from "./utils";
 import styled from "styled-components";
+
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 const Title = styled.h1`
   font-size: 3em;
@@ -54,6 +58,11 @@ function App() {
     fetchData(query, userList, setData);
     //Pass query so we can call again on changes
   }, [query]);
+
+  // One time effect
+  useEffect(() => {
+    fetchUserList(setList);
+  }, [])
 
   return (
     <div className="App">
@@ -151,6 +160,7 @@ function App() {
                 Add to list {"->"}
               </button>
               <br />
+              <br />
               <button
                 className={"btn btn-outline-secondary"}
                 onClick={function () {
@@ -184,6 +194,25 @@ function App() {
                 }}
               >
                 Remove from list {"<-"}
+              </button>
+              <br />
+              <br />
+              <button
+                className={"btn btn-primary"}
+                onClick={function () {
+                  let csrf = getCookie("csrftoken");
+                  axios
+                    .post(`http://127.0.0.1:8000/save/`, {data: userList}, {
+                      headers: {
+                        "X-CSRFToken": csrf,
+                      },
+                    })
+                    .then((response) => {
+                      console.log(response);
+                    });
+                }}
+              >
+                Save list!
               </button>
             </ButtonContainer>
           </CenterPane>

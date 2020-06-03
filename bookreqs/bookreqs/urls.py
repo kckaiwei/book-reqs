@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('recommendations/', views.get_count_recommended, name='recommendations_api'),
     path('authors/', views.get_author_list, name='authors_api'),
+    path('save/', views.save_list, name='save_api'),
+    path('user_list/', views.get_list, name='get_list_api'),
     path('', views.recommendations_page, name="recommendations"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

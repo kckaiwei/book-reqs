@@ -74,6 +74,7 @@ WSGI_APPLICATION = 'bookreqs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# Use sqlite3 since this is not a real project
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
