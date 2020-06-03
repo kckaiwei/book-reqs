@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from recommender.models import Book, Author, Recommendation
+from recommender.models import Book, Author, Recommendation, UserList
 
 
 # Create your tests here.
@@ -23,6 +23,11 @@ class RecommendationTestCase(TestCase):
         rec2 = Recommendation.objects.create(book=cat)
 
         rec3 = Recommendation.objects.create(book=places)
+
+        u_list = UserList.objects.create()
+        u_list.user = self.test_user
+        u_list.books.add(unincorp)
+        u_list.save()
 
         self.client = Client()
         self.client.force_login(self.test_user)
@@ -52,6 +57,11 @@ class RecommendationTestCase(TestCase):
         response = self.client.get('/authors/')
         self.assertEqual(response.json()['data'], ['Dr. Seuss', 'Dani Kollin'])
 
+    def test_get_user_list(self):
+        response = self.client.get('/user_list/')
+        self.assertEqual(response.json()['data'], [{'author': 'Dani Kollin', 'selected': False,
+                                                    'title': 'The Unincorporated Man', 'url': ''}])
+
     def check_status_code(self, response):
         self.assertNotEqual(response.status_code, 200)
         self.assertEqual(response.status_code, 302)
@@ -63,6 +73,7 @@ class RecommendationTestCase(TestCase):
         self.check_status_code(response)
         response = nologin.get('/authors/')
         self.check_status_code(response)
-        response = self.client.get('/recommendations/', {'count': '2'})
+        response = nologin.get('/recommendations/', {'count': '2'})
         self.check_status_code(response)
+
 
