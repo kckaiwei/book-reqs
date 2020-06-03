@@ -3,12 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
-function App() {
-  const [books, setData] = useState({ data: [] });
-  const [userList, setList] = useState([]);
-  const [query, setQuery] = useState("George Orwell");
-
-  const Title = styled.h1`
+const Title = styled.h1`
     font-size: 3em;
     text-align: center;
     color: white;
@@ -48,6 +43,11 @@ function App() {
     text-align: right;
     margin-right: 1rem;
   `;
+
+function App() {
+  const [books, setData] = useState({ data: [] });
+  const [userList, setList] = useState([]);
+  const [query, setQuery] = useState("George Orwell");
 
   useEffect(() => {
     // Can't return an async function, but can call one in an effect
@@ -172,8 +172,6 @@ function App() {
                   setData({
                     data: books.data.concat(
                       userList.reduce(function (result, book) {
-                        console.log(book);
-                        console.log(book.selected);
                         if (book.selected == true) {
                           result.push({
                             title: book.title,
