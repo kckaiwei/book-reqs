@@ -16,11 +16,8 @@ export async function fetchData(query, userList, setData) {
 }
 
 export async function fetchUserList(setList) {
-    const result = await axios(
-      `http://127.0.0.1:8000/user_list/`
-    );
-    console.log(result);
-    setList(result.data.data)
+  const result = await axios(`http://127.0.0.1:8000/user_list/`);
+  setList(result.data.data);
 }
 
 export function addSelectedKey(result, userList, stateFunction) {

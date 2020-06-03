@@ -52,6 +52,7 @@ function App() {
   const [books, setData] = useState({ data: [] });
   const [userList, setList] = useState([]);
   const [query, setQuery] = useState("George Orwell");
+  const [isSaving, setSaving] = useState(false);
 
   useEffect(() => {
     // Can't return an async function, but can call one in an effect
@@ -62,7 +63,7 @@ function App() {
   // One time effect
   useEffect(() => {
     fetchUserList(setList);
-  }, [])
+  }, []);
 
   return (
     <div className="App">
@@ -201,18 +202,23 @@ function App() {
                 className={"btn btn-primary"}
                 onClick={function () {
                   let csrf = getCookie("csrftoken");
+                    setSaving(true);
                   axios
-                    .post(`http://127.0.0.1:8000/save/`, {data: userList}, {
-                      headers: {
-                        "X-CSRFToken": csrf,
-                      },
-                    })
+                    .post(
+                      `http://127.0.0.1:8000/save/`,
+                      { data: userList },
+                      {
+                        headers: {
+                          "X-CSRFToken": csrf,
+                        },
+                      }
+                    )
                     .then((response) => {
-                      console.log(response);
+                        setSaving(false);
                     });
                 }}
               >
-                Save list!
+                {isSaving ? "Saving..." : "Save list!"}
               </button>
             </ButtonContainer>
           </CenterPane>
