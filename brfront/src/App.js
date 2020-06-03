@@ -79,7 +79,7 @@ function App() {
             <InputHelper className={"input-label"}>WHO/HOW MANY?</InputHelper>
             <br />
             <input
-              className={""}
+              className={"query-input"}
               type="text"
               value={query}
               onChange={(event) => {

@@ -7,6 +7,16 @@ body {
     background-color: #347991;
 }
 
-.active {
+.list-group-item.active {
+    background-color: #6ea062;
+    border-color: #6ea062;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.1)
+}
 
+.list-group-item.active:hover {
+    box-shadow: 2px 2px 0 rgba(0,0,0,.1)
+}
+
+.query-input {
+    text-align: center;
 }
