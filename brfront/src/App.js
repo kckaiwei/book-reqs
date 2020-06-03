@@ -23,9 +23,22 @@ function App() {
     font-family: quasimoda;
   `;
 
+  const CenterHeader = styled.div`
+    text-align: center;
+  `;
+
+  const ButtonContainer = styled.div`
+    margin-top: 4rem;
+    background-color: white;
+    border-radius: 0.4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  `;
+
   const LeftPane = styled.div`
     font-size: 1rem;
     text-align: left;
+    margin-left: 1rem;
   `;
   const CenterPane = styled.div`
     font-size: 1rem;
@@ -34,6 +47,7 @@ function App() {
   const RightPane = styled.div`
     font-size: 1rem;
     text-align: right;
+    margin-right: 1rem;
   `;
 
   useEffect(() => {
@@ -44,17 +58,20 @@ function App() {
         const result = await axios(
           `http://127.0.0.1:8000/recommendations/?author=${query}`
         );
-        //console.log(result)
         console.log(result.data);
-        setData(result.data);
+        // Add a new condition of selected or not
+        let response = result.data;
+        Object.keys(response).map((key) => (result.data[key].selected = false));
+        setData(response);
+        console.log(response);
       } else {
-        console.log("why aren't we here");
         const result = await axios(
           `http://127.0.0.1:8000/recommendations/?count=${query}`
         );
-        //console.log(result)
-        console.log(result.data);
-        setData(result.data);
+        let response = result.data;
+        Object.keys(response).map((key) => (result.data[key].selected = false));
+        setData(response);
+        console.log(response);
       }
     };
 
@@ -66,24 +83,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Title>Ask Pythia</Title>
-        <div className="row">
-          <LeftPane className={"col-sm"}>
-            <Fragment>
-              <ul>
-                {books.data.map((item) => (
-                  <li key={item.title}>
-                    <input type={"checkbox"}></input>
-                    <span>
-                      <a href={item.url}>{item.title}</a>
-                    </span>
-                    <br />
-                    <span>{item.author}</span>
-                  </li>
-                ))}
-              </ul>
-            </Fragment>
-          </LeftPane>
-          <CenterPane className={"col-sm"}>
+        <CenterHeader className="row">
+          <div className={"col-sm"}>
             <InputHelper className={"input-label"}>WHO/HOW MANY?</InputHelper>
             <br />
             <input
@@ -94,8 +95,120 @@ function App() {
                 setQuery(event.target.value);
               }}
             ></input>
+          </div>
+        </CenterHeader>
+        <div className="row">
+          <LeftPane className={"col-sm"}>
+            <Fragment>
+              <ul className={"list-group"}>
+                {books.data.map((item) => (
+                  <li
+                    key={item.title}
+                    className={
+                      "list-group-item " +
+                      (item.selected == true ? "active" : "")
+                    }
+                    onClick={function () {
+                      setData({
+                        data: books.data.map(function (book) {
+                          if (book.title == item.title) {
+                            book.selected =
+                              item.selected == true ? false : true;
+                          }
+                          return {
+                            title: book.title,
+                            author: book.author,
+                            url: book.url,
+                            selected: book.selected,
+                          };
+                        }),
+                      });
+                    }}
+                  >
+                    <div>
+                      <span>
+                        <a href={item.url}>{item.title}</a>
+                      </span>
+                      <br />
+                      <span>{item.author}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
+          </LeftPane>
+          <CenterPane className={"col-sm"}>
+            <ButtonContainer>
+              <button
+                className={"btn btn-outline-primary"}
+                onClick={function () {
+                  setList(userList.concat(
+                    books.data.map(function (book) {
+                      if (book.selected == true) {
+                        return {
+                          title: book.title,
+                          author: book.author,
+                          url: book.url,
+                          selected: false,
+                        };
+                      }
+                    }))
+                  );
+                  setData({
+                    data: books.data.filter(function (book) {
+                      if (book.selected != true) {
+                        return;
+                      }
+                    }),
+                  });
+                }}
+              >
+                Add to list {"->"}
+              </button>
+              <br />
+              <button className={"btn btn-outline-secondary"}>
+                Remove from list {"<-"}
+              </button>
+            </ButtonContainer>
           </CenterPane>
-          <RightPane className={"col-sm"}></RightPane>
+          <RightPane className={"col-sm"}>
+            <Fragment>
+              <ul className={"list-group"}>
+                {userList.map((item) => (
+                  <li
+                    key={item.title}
+                    className={
+                      "list-group-item " +
+                      (item.selected == true ? "active" : "")
+                    }
+                    onClick={function () {
+                      setList(userList.map(function (book) {
+                              if (book.title == item.title) {
+                                book.selected =
+                                  item.selected == true ? false : true;
+                              }
+                              return {
+                                title: book.title,
+                                author: book.author,
+                                url: book.url,
+                                selected: book.selected,
+                              };
+                            })
+                      );
+                    }}
+                  >
+                    <div>
+                      <span>
+                        <a href={item.url}>{item.title}</a>
+                      </span>
+                      <br />
+                      <span>{item.author}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
+          </RightPane>
         </div>
       </header>
     </div>
