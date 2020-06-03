@@ -88,5 +88,12 @@ class RecommendationTestCase(TestCase):
         self.check_status_code(response)
         response = nologin.get('/recommendations/', {'count': '2'})
         self.check_status_code(response)
+        response = nologin.put('/save/', json.dumps({'data': [{'title': 'The Unincorporated Man',
+                                                                   'author': 'Dani Kollin',
+                                                                   'url': '',
+                                                                   'selected': False}]}))
+        self.check_status_code(response)
+        response = nologin.get('/user_list/')
+        self.check_status_code(response)
 
 
