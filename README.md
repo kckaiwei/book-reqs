@@ -107,3 +107,5 @@ Testing the react components did yield more difficulty. With react-hooks being
 a relatively new technology, some testing tools were not full caught up; however,
 jest, and enzyme came through, and via mocking functions I was able to test the
 necessary functions. 
+
+Webpack is used for bundling here.

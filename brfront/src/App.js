@@ -54,16 +54,23 @@ function App() {
   const [query, setQuery] = useState("George Orwell");
   const [isSaving, setSaving] = useState(false);
 
+  let firstRendered = false;
+
   useEffect(() => {
     // Can't return an async function, but can call one in an effect
-    fetchData(query, userList, setData);
+    if (firstRendered == false) {
+      // Must chain so we can keep order for initial state
+      fetchUserList(setList).then(function (resp_list) {
+        console.log("thened");
+        fetchData(query, resp_list, setData);
+      });
+      firstRendered = true;
+    } else {
+      fetchData(query, userList, setData);
+    }
+
     //Pass query so we can call again on changes
   }, [query]);
-
-  // One time effect
-  useEffect(() => {
-    fetchUserList(setList);
-  }, []);
 
   return (
     <div className="App">
@@ -202,7 +209,7 @@ function App() {
                 className={"btn btn-primary"}
                 onClick={function () {
                   let csrf = getCookie("csrftoken");
-                    setSaving(true);
+                  setSaving(true);
                   axios
                     .post(
                       `http://127.0.0.1:8000/save/`,
@@ -214,7 +221,7 @@ function App() {
                       }
                     )
                     .then((response) => {
-                        setSaving(false);
+                      setSaving(false);
                     });
                 }}
               >
