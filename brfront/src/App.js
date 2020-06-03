@@ -135,7 +135,7 @@ function App() {
                 onClick={function () {
                   setList(
                     userList.concat(
-                        // Reduce to filter + map at the same time
+                      // Reduce to filter + map at the same time
                       books.data.reduce(function (result, book) {
                         if (book.selected == true) {
                           result.push({
@@ -153,11 +153,11 @@ function App() {
                     data: books.data.filter(function (book) {
                       if (book.selected != true) {
                         return {
-                            title: book.title,
-                            author: book.author,
-                            url: book.url,
-                            selected: false,
-                          };
+                          title: book.title,
+                          author: book.author,
+                          url: book.url,
+                          selected: false,
+                        };
                       }
                     }),
                   });
@@ -166,12 +166,14 @@ function App() {
                 Add to list {"->"}
               </button>
               <br />
-              <button className={"btn btn-outline-secondary"} onClick={function () {
-                  setData({data:
-                    books.data.concat(
+              <button
+                className={"btn btn-outline-secondary"}
+                onClick={function () {
+                  setData({
+                    data: books.data.concat(
                       userList.reduce(function (result, book) {
-                        console.log(book)
-                        console.log(book.selected)
+                        console.log(book);
+                        console.log(book.selected);
                         if (book.selected == true) {
                           result.push({
                             title: book.title,
@@ -180,24 +182,24 @@ function App() {
                             selected: false,
                           });
                         }
-                        return result
+                        return result;
                       }, [])
-                    )
-              }
-                  );
+                    ),
+                  });
                   setList(
                     userList.filter(function (book) {
                       if (book.selected != true) {
                         return {
-                            title: book.title,
-                            author: book.author,
-                            url: book.url,
-                            selected: false,
-                          };
+                          title: book.title,
+                          author: book.author,
+                          url: book.url,
+                          selected: false,
+                        };
                       }
-                    }),
+                    })
                   );
-                }}>
+                }}
+              >
                 Remove from list {"<-"}
               </button>
             </ButtonContainer>
@@ -250,23 +252,27 @@ function App() {
 function addSelectedKey(result, userList, stateFunction) {
   let response = result.data;
   // Add a new condition of selected or not
-  response.data = response.data.map(function(book) {
-    return {"title": book.title, "author": book.author, "url": book.url, "selected": false}
+  response.data = response.data.map(function (book) {
+    return {
+      title: book.title,
+      author: book.author,
+      url: book.url,
+      selected: false,
+    };
   });
 
   // Build out a list to compare against, use title:author as uuid
-  let compareList = userList.map(function(item){
-      return `${item.title}:${item.author}`
+  let compareList = userList.map(function (item) {
+    return `${item.title}:${item.author}`;
   });
   // Account for already saved items to not show again
   let filteredData = response.data.filter(function (book) {
-    if (compareList.includes(`${book.title}:${book.author}`)
-    ) {
-      return null
+    if (compareList.includes(`${book.title}:${book.author}`)) {
+      return null;
     }
-    return book
+    return book;
   });
-  stateFunction({data: filteredData});
+  stateFunction({ data: filteredData });
 }
 
 export default App;
