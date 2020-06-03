@@ -248,15 +248,16 @@ function addSelectedKey(result, userList, stateFunction) {
   response.data = response.data.map(function(book) {
     return {"title": book.title, "author": book.author, "url": book.url, "selected": false}
   });
-  console.log(response)
+
+  // Build out a list to compare against, use title:author as uuid
+  let compareList = userList.map(function(item){
+      return `${item.title}:${item.author}`
+  });
   // Account for already saved items to not show again
   let filteredData = response.data.filter(function (book) {
     console.log({ ...book, selected: true });
-    if (
-      userList.includes({ ...book, selected: true }) ||
-      userList.includes({ ...book, selected: false })
+    if (compareList.includes(`${book.title}:${book.author}`)
     ) {
-      console.log("within")
       return null
     }
     return book
