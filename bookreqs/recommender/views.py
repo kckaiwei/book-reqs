@@ -49,7 +49,6 @@ def get_author_list(request):
 
 @login_required
 def recommendations_page(request):
-    user = request.user
     return render(request, 'recommender/index.html')
 
 
