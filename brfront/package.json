@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "build-debug": "webpack --mode development",
     "build-jsx": "webpack --mode production",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "format-js": "scripts/format-js"
   },
@@ -47,6 +47,8 @@
     "css-loader": "^3.5.3",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.0.1",
+    "react-test-renderer": "^16.13.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }

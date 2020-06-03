@@ -2,7 +2,6 @@ import "@babel/polyfill";
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import "./App.css";
 
 function App() {
   const [books, setData] = useState({ data: [] });
